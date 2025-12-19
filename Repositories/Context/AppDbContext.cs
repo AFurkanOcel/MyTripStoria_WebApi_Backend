@@ -5,16 +5,13 @@ namespace Repositories.Context
 {
     public class AppDbContext : DbContext
     {
-        // Constructor
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        // DbSet'ler (tablo karşılıkları)
         public DbSet<User> Users { get; set; }
         public DbSet<Trip> Trips { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<City> Cities { get; set; }
 
-        // Opsiyonel: Fluent API ile ilişki ve kurallar
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -31,7 +28,7 @@ namespace Repositories.Context
                         .WithOne(c => c.Country)
                         .HasForeignKey(c => c.CountryId);
 
-            // Trip ↔ Country ve City (FK)
+            // Trip ↔ Country and City (FK)
             modelBuilder.Entity<Trip>()
                         .HasOne(t => t.Country)
                         .WithMany()
@@ -44,7 +41,7 @@ namespace Repositories.Context
                         .HasForeignKey(t => t.CityId)
                         .OnDelete(DeleteBehavior.Restrict);
 
-            // User ↔ Country ve City (FK)
+            // User ↔ Country and City (FK)
             modelBuilder.Entity<User>()
                         .HasOne(u => u.Country)
                         .WithMany()
